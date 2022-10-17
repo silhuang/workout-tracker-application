@@ -3,10 +3,11 @@ package model;
 import ui.WorkoutTrackerApp;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 // Represents a workout with a title and a certain number of tracks
-public class Workout {
+public class Workout implements Iterable<Track> {
     private String workoutTitle;
     private ArrayList<Track> tracks;
 
@@ -54,5 +55,8 @@ public class Workout {
     }
 
 
-
+    @Override
+    public Iterator<Track> iterator() {
+        return tracks.iterator();
+    }
 }

@@ -2,9 +2,10 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 // Represents a track with a title and a certain number of moves
-public class Track {
+public class Track implements Iterable<Move> {
     private String trackTitle;
     private ArrayList<Move> moves;
 
@@ -46,5 +47,12 @@ public class Track {
     // EFFECTS: returns the list of moves added to the track so far
     public ArrayList<Move> getMoves() {
         return moves;
+    }
+
+
+
+    @Override
+    public Iterator<Move> iterator() {
+        return moves.iterator();
     }
 }
