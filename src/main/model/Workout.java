@@ -43,12 +43,6 @@ public class Workout implements Iterable<Track> {
         return workoutTitle;
     }
 
-    // MODIFIES: this
-    // EFFECTS: sets the title of the workout to the given title
-    public void setWorkoutTitle(String title) {
-        workoutTitle = title;
-    }
-
     // EFFECTS: returns the set of tracks added to the workout so far
     public ArrayList<Track> getTracks() {
         return tracks;
@@ -56,6 +50,7 @@ public class Workout implements Iterable<Track> {
 
 
     @Override
+    // EFFECTS: returns an iterator over the collection of tracks
     public Iterator<Track> iterator() {
         return tracks.iterator();
     }

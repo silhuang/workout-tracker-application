@@ -28,12 +28,6 @@ public class Move {
         return name;
     }
 
-    // MODIFIES: this
-    // EFFECTS: sets the name of the move to newName
-    public void setName(String newName) {
-        name = newName;
-    }
-
     // EFFECTS: returns the number of reps
     public int getReps() {
         return reps;
