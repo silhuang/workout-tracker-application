@@ -145,7 +145,7 @@ public class WorkoutTrackerApp {
         System.out.println("Please enter the number corresponding to the track you would like to view:");
         int trackNumber = userInput.nextInt();
         trackNumber--;
-        Track trackToView = workout.getTracks().get(trackNumber);
+        Track trackToView = workout.getTracks().get(trackNumber); // assign reference to a method that returns a track
 
         for (Move m : trackToView) {
             int moveNumber = trackToView.getMoves().indexOf(m);

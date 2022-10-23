@@ -3,6 +3,9 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TrackTest {
@@ -75,6 +78,24 @@ public class TrackTest {
     public void removeNonExistentMove() {
         assertFalse(testTrack.deleteMove(firstMove));
         assertEquals(0, testTrack.getMoves().size());
+    }
+
+    @Test
+    public void testMovesIterator() {
+        ArrayList<Move> moves = testTrack.getMoves();
+        testTrack.addMove(firstMove);
+        testTrack.addMove(secondMove);
+
+        ArrayList<Move> copyOfMoves = new ArrayList<>();
+        copyOfMoves.add(firstMove);
+        copyOfMoves.add(secondMove);
+
+        Iterator<Move> movesIterator = moves.iterator();
+        for (int i = 0; i < moves.size(); i++) {
+            Move move = movesIterator.next();
+            Move sameMove = copyOfMoves.get(i);
+            assertTrue(move.equals(sameMove));
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -95,5 +96,23 @@ class WorkoutTest {
         assertEquals(0, tracks.size());
     }
 
+    @Test
+    public void testIterator() {
+        ArrayList<Track> trackList = testWorkout.getTracks();
+        testWorkout.addTrack(track1);
+        testWorkout.addTrack(track2);
 
+        ArrayList<Track> tracksToIterateOver = new ArrayList<>();
+        tracksToIterateOver.add(track1);
+        tracksToIterateOver.add(track2);
+
+        Iterator<Track> tracksIterator = trackList.iterator();
+        for (int i = 0; i < trackList.size(); i++) {
+            Track track = tracksIterator.next();
+            Track sameTrack = tracksToIterateOver.get(i);
+            assertTrue(track.equals(sameTrack));
+        }
+    }
 }
+
+
