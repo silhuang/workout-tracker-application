@@ -1,5 +1,8 @@
 package model;
 
+import exceptions.NegativeRepsException;
+import exceptions.UnrealisticRepsException;
+
 // Represents a move with a name and number of reps
 public class Move {
     private String name;
@@ -7,16 +10,30 @@ public class Move {
 
     // EFFECTS: constructs a new move with the given name and number of reps
     //          number of seconds that the move is held
-    public Move(String name, int reps) {
+    public Move(String name, int reps) throws UnrealisticRepsException {
+        if (reps > 1000) {
+            throw new UnrealisticRepsException();
+        }
+        if (reps <= 0) {
+            throw new UnrealisticRepsException();
+        }
         this.name = name;
         this.reps = reps;
     }
 
     // REQUIRES: newReps > 0
     // MODIFIES: this
-    // EFFECTS: changes the number of reps of the current move to newReps
-    public boolean changeReps(int newReps) {
-        if (reps != newReps) {
+    // EFFECTS: changes the number of reps of the current move to newReps,
+    //          throws NegativeRepsException if newReps <= 0.
+    //          throws UnrealisticRepsException if newReps > 1000
+    public boolean changeReps(int newReps) throws NegativeRepsException, UnrealisticRepsException {
+        if (newReps <= 0) {
+            throw new NegativeRepsException();
+        }
+        if (newReps > 1000) {
+            throw new UnrealisticRepsException();
+
+        } else if (reps != newReps) {
             reps = newReps;
             return true;
         }
@@ -32,7 +49,6 @@ public class Move {
     public int getReps() {
         return reps;
     }
-
 
 
 }

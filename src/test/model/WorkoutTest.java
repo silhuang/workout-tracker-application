@@ -1,5 +1,8 @@
 package model;
 
+import exceptions.TitleAlreadyUsedException;
+import exceptions.TrackNotFoundException;
+import exceptions.UnrealisticRepsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,19 +33,24 @@ class WorkoutTest {
     public void testAddTrackOnce() {
         ArrayList<Track> tracks = testWorkout.getTracks();
 
-        assertTrue(testWorkout.addTrack(track1));
-        assertEquals(1, tracks.size());
-        assertEquals(track1, tracks.get(0));
+        try {
+            testWorkout.addTrack(track1);
+            assertEquals(1, tracks.size());
+            assertEquals(track1, tracks.get(0));
+        } catch (TitleAlreadyUsedException e) {
+            fail();
+        }
     }
 
     @Test
     public void testAddDifferentTracks() {
-        boolean addOnce = testWorkout.addTrack(track1);
-        boolean addTwice = testWorkout.addTrack(track2);
+        try {
+            testWorkout.addTrack(track1);
+            testWorkout.addTrack(track2);
+        } catch (TitleAlreadyUsedException e) {
+            fail();
+        }
         ArrayList<Track> tracks = testWorkout.getTracks();
-
-        assertTrue(addOnce);
-        assertTrue(addTwice);
 
         assertEquals(2, tracks.size());
         assertEquals(track1, tracks.get(0));
@@ -51,56 +59,101 @@ class WorkoutTest {
 
     @Test
     public void testAddSameTrackTwice() {
-        boolean addOnce = testWorkout.addTrack(track1);
-        boolean addTwice = testWorkout.addTrack(track1);
-        ArrayList<Track> tracks = testWorkout.getTracks();
+        try {
+            testWorkout.addTrack(track1);
+            testWorkout.addTrack(track1);
+            fail("A TitleAlreadyUsedException was not thrown");
+        } catch (TitleAlreadyUsedException e) {
+            System.out.println("Sorry, the title you have entered is already taken. Please enter " +
+                                "a different title:");
+        }
 
-        assertTrue(addOnce);
-        assertFalse(addTwice);
+        ArrayList<Track> tracks = testWorkout.getTracks();
 
         assertEquals(1, tracks.size());
         assertEquals(track1, tracks.get(0));
     }
 
     @Test
-    public void testDeleteOneTrack() {
-        testWorkout.addTrack(track1);
+    public void testAddTrackWithSameName() {
+        try {
+            track2.addMove(new Move("high knees", 25));
+        } catch (UnrealisticRepsException e) {
+            fail();
+        }
 
-        boolean deleteOnce = testWorkout.deleteTrack(track1);
+        try {
+            testWorkout.addTrack(track2);
+            testWorkout.addTrack(new Track(track2.getTrackTitle()));
+            fail("A TitleAlreadyUsedException was not thrown");
+        } catch (TitleAlreadyUsedException e) {
+            System.out.println("Sorry, the title you have entered is already taken. Please enter " +
+                                "a different title:");
+        }
+
         ArrayList<Track> tracks = testWorkout.getTracks();
 
-        assertTrue(deleteOnce);
+        assertEquals(1, tracks.size());
+        assertEquals(track2, tracks.get(0));
+    }
+
+    @Test
+    public void testDeleteOneTrack() {
+        try {
+            testWorkout.addTrack(track1);
+        } catch (TitleAlreadyUsedException e) {
+            fail();
+        }
+
+        try {
+            testWorkout.deleteTrack(track1);
+        } catch (TrackNotFoundException e) {
+            fail();
+        }
+        ArrayList<Track> tracks = testWorkout.getTracks();
         assertEquals(0, tracks.size());
     }
 
     @Test
     public void testDeleteTrackNotThere() {
-        boolean delete = testWorkout.deleteTrack(track2);
+        try {
+            testWorkout.deleteTrack(track2);
+        } catch (TrackNotFoundException e) {
+            System.out.println("Could not find a track with title " + track2.getTrackTitle());
+        }
         ArrayList<Track> tracks = testWorkout.getTracks();
-
-        assertFalse(delete);
         assertEquals(0, tracks.size());
     }
 
     @Test
     public void deleteMultipleTracks() {
-        testWorkout.addTrack(track1);
-        testWorkout.addTrack(track2);
-
-        boolean deleteOnce = testWorkout.deleteTrack(track1);
-        boolean deleteTwice = testWorkout.deleteTrack(track2);
         ArrayList<Track> tracks = testWorkout.getTracks();
+        try {
+            testWorkout.addTrack(track1);
+            testWorkout.addTrack(track2);
+            assertEquals(2, tracks.size());
+        } catch (TitleAlreadyUsedException e) {
+            fail();
+        }
 
-        assertTrue(deleteOnce);
-        assertTrue(deleteTwice);
-        assertEquals(0, tracks.size());
+        try {
+            testWorkout.deleteTrack(track1);
+            testWorkout.deleteTrack(track2);
+            assertEquals(0, tracks.size());
+        } catch (TrackNotFoundException e) {
+            fail();
+        }
     }
 
     @Test
     public void testIterator() {
         ArrayList<Track> trackList = testWorkout.getTracks();
-        testWorkout.addTrack(track1);
-        testWorkout.addTrack(track2);
+        try {
+            testWorkout.addTrack(track1);
+            testWorkout.addTrack(track2);
+        } catch (TitleAlreadyUsedException e) {
+            fail();
+        }
 
         ArrayList<Track> tracksToIterateOver = new ArrayList<>();
         tracksToIterateOver.add(track1);

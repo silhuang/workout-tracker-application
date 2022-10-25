@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.TitleAlreadyUsedException;
+import exceptions.TrackNotFoundException;
 import ui.WorkoutTrackerApp;
 
 import java.util.ArrayList;
@@ -18,24 +20,54 @@ public class Workout implements Iterable<Track> {
         tracks = new ArrayList<>();
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds the given track to the workout's set of tracks
-    public boolean addTrack(Track track) {
-        if (!tracks.contains(track)) {
-            tracks.add(track);
-            return true;
-        }
-        return false;
-    }
+//    // MODIFIES: this
+//    // EFFECTS: adds the given track to the workout's set of tracks
+//    public boolean addTrack(Track track) {
+//        if (!tracks.contains(track)) {
+//            tracks.add(track);
+//            return true;
+//        }
+//        return false;
+//    }
 
     // MODIFIES: this
-    // EFFECTS: if track exists in the workout, delete it from the set of tracks
-    public boolean deleteTrack(Track track) {
-        if (tracks.contains(track)) {
-            tracks.remove(track);
-            return true;
+    // EFFECTS: adds the given track to the workout's set of tracks,
+    //          throws TitleAlreadyUsedException if the name of the
+    //          track is the same as any track already in the workout
+    public void addTrack(Track track) throws TitleAlreadyUsedException {
+        String trackToAdd = track.getTrackTitle();
+        for (Track t : tracks) {
+            String trackTitle = t.getTrackTitle();
+            if (trackToAdd == trackTitle) {
+                throw new TitleAlreadyUsedException();
+            }
         }
-        return false;
+        tracks.add(track);
+    }
+
+//    // MODIFIES: this
+//    // EFFECTS: if track exists in the workout, delete it from the set of tracks
+//    public boolean deleteTrack(Track track) {
+//        if (tracks.contains(track)) {
+//            tracks.remove(track);
+//            return true;
+//        }
+//        return false;
+//    }
+
+    // MODIFIES: this
+    // EFFECTS: if track exists in the workout, delete it from the set of tracks,
+    //          throws TrackNotFoundException if the workout doesn't contain
+    //          this track
+    public void deleteTrack(Track track) throws TrackNotFoundException {
+        String trackToDelete = track.getTrackTitle();
+        for (Track t : tracks) {
+            String trackTitle = t.getTrackTitle();
+            if (trackToDelete == trackTitle) {
+                tracks.remove(track);
+            }
+        }
+        throw new TrackNotFoundException();
     }
 
     // EFFECTS: returns the title of the workout

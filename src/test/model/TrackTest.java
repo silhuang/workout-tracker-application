@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.UnrealisticRepsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +17,12 @@ public class TrackTest {
     @BeforeEach
     public void runBefore() {
         testTrack = new Track("Standing Warmup");
-        firstMove = new Move("Prep and Lift - SLOW (R)", 4);
-        secondMove = new Move("Prep and Lift - FAST (R)", 8);
+        try {
+            firstMove = new Move("Prep and Lift - SLOW (R)", 4);
+            secondMove = new Move("Prep and Lift - FAST (R)", 8);
+        } catch (UnrealisticRepsException e) {
+            fail();
+        }
     }
 
     @Test
