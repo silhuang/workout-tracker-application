@@ -14,7 +14,7 @@ import java.util.Scanner;
 // Pilates Workout Tracker Application
 public class WorkoutTrackerApp {
     private Scanner userInput = new Scanner(System.in);
-    private Workout workout;
+    private ArrayList<Workout> workouts = new ArrayList<>();
 
 
     // EFFECTS: runs the workout tracker application
@@ -55,7 +55,7 @@ public class WorkoutTrackerApp {
     // EFFECTS: processes user entry
     private void processEntry(int userEntry) {
         if (userEntry == 1) {
-            //createWorkout();
+            createNewWorkout();
         } else if (userEntry == 2) {
             //viewWorkouts();
         } else {
@@ -63,7 +63,23 @@ public class WorkoutTrackerApp {
         }
     }
 
+    private void createNewWorkout() {
+        System.out.println("Please enter the title of your new workout:");
+        String titleOfNewWorkout = userInput.next();
+        for (Workout w : workouts) {
+            String existingTitle = w.getWorkoutTitle();
+            if (existingTitle.equals(titleOfNewWorkout)) {
+                System.out.println("Sorry, the title you have entered has already been used."
+                         + "Please enter a different title:");
+                //createNewWorkout();
+            }
+            Workout newWorkout = new Workout(titleOfNewWorkout);
+            workouts.add(newWorkout);
+            System.out.println("Your workout " + "\"" + titleOfNewWorkout + "\"" + " has been created!");
+        }
 
+
+    }
 
 
 }
