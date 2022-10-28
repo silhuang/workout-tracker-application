@@ -1,0 +1,13 @@
+{
+  "workout title": "Workout with illegal move in track",
+  "tracks": [
+    {
+      "track title": "track",
+      "moves": [{
+        "name": "burpees",
+        "reps": -30
+      }
+      ]
+    }
+  ]
+}

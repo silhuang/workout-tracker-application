@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
 
 // Represents a workout with a title and a certain number of tracks
-public class Workout implements Iterable<Track> {
+public class Workout implements Iterable<Track>, Writable {
     private String workoutTitle;
     private ArrayList<Track> tracks;
 
@@ -60,5 +64,14 @@ public class Workout implements Iterable<Track> {
     // EFFECTS: returns an iterator over the collection of tracks
     public Iterator<Track> iterator() {
         return tracks.iterator();
+    }
+
+    @Override
+    // EFFECTS: returns this workout as a JSON object
+    public JSONObject toJson() {
+        JSONObject jsonWorkout = new JSONObject();
+        jsonWorkout.put("workout title", workoutTitle);
+        jsonWorkout.put("tracks", new JSONArray(tracks));
+        return jsonWorkout;
     }
 }
