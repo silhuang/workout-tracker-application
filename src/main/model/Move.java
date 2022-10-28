@@ -2,9 +2,11 @@ package model;
 
 import exceptions.NegativeRepsException;
 import exceptions.UnrealisticRepsException;
+import org.json.JSONObject;
+import persistence.Writable;
 
 // Represents a move with a name and number of reps
-public class Move {
+public class Move implements Writable {
     private String name;
     private int reps;
 
@@ -51,4 +53,12 @@ public class Move {
     }
 
 
+    @Override
+    // EFFECTS: returns this move as a JSON object
+    public JSONObject toJson() {
+        JSONObject jsonMove = new JSONObject();
+        jsonMove.put("name", name);
+        jsonMove.put("reps", reps);
+        return jsonMove;
+    }
 }
