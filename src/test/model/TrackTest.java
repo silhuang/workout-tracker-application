@@ -87,7 +87,6 @@ public class TrackTest {
 
     @Test
     public void testMovesIterator() {
-        ArrayList<Move> moves = testTrack.getMoves();
         testTrack.addMove(firstMove);
         testTrack.addMove(secondMove);
 
@@ -95,11 +94,10 @@ public class TrackTest {
         copyOfMoves.add(firstMove);
         copyOfMoves.add(secondMove);
 
-        Iterator<Move> movesIterator = moves.iterator();
-        for (int i = 0; i < moves.size(); i++) {
-            Move move = movesIterator.next();
-            Move sameMove = copyOfMoves.get(i);
-            assertTrue(move.equals(sameMove));
+        int i = 0;
+        for (Move m : testTrack) {
+            assertEquals(m, copyOfMoves.get(i));
+            i++;
         }
     }
 

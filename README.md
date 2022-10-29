@@ -28,6 +28,6 @@ User Stories:
 - As a user, when I select "Quit application" from the main menu, I want to be given the option of 
   whether I would like to save my newly created workout to file
 - As a user, when I start the application, I have the option of loading my previous workout from file
-  by clicking "View saved workout" from the main menu
+  by clicking "Load saved workout" from the main menu
 
 

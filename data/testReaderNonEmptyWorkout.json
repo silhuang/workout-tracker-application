@@ -2,17 +2,21 @@
   "workout title": "Workout with tracks",
   "tracks": [
     {
-      "track title": "track1",
-      "moves": [{
-        "name": "lunges",
-        "reps": 10
-      },
+      "trackTitle": "track1",
+      "moves": [
+        {
+          "name": "lunges",
+          "reps": 10
+        },
         {
           "name": "jumping jacks",
           "reps": 30
-        }],
+        }
+      ]
+    },
 
-      "track title": "track2",
+    {
+      "trackTitle": "track2",
       "moves": []
     }
   ]

@@ -64,7 +64,7 @@ public class JsonReader {
     // MODIFIES: workout
     // EFFECTS: parses track from JSON object and adds it to workout
     private void addTrack(Workout workout, JSONObject jsonTrack) throws UnrealisticRepsException {
-        String title = jsonTrack.getString("track title");
+        String title = jsonTrack.getString("trackTitle");
         Track track = new Track(title);
         addMoves(track, jsonTrack);
         workout.addTrack(track);

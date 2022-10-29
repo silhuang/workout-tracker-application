@@ -62,7 +62,7 @@ public class Track implements Iterable<Move>, Writable {
     // EFFECTS: returns a Track as a JSON object
     public JSONObject toJson() {
         JSONObject jsonTrack = new JSONObject();
-        jsonTrack.put("track title", trackTitle);
+        jsonTrack.put("trackTitle", trackTitle);
         jsonTrack.put("moves", movesToJson());
         return jsonTrack;
     }

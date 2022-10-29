@@ -120,7 +120,6 @@ class WorkoutTest {
 
     @Test
     public void testIterator() {
-        //ArrayList<Track> trackList = testWorkout.getTracks();
         testWorkout.addTrack(track1);
         testWorkout.addTrack(track2);
 
@@ -129,16 +128,10 @@ class WorkoutTest {
         tracksToIterateOver.add(track2);
 
         int i = 0;
-        //Iterator<Track> tracksIterator = trackList.iterator();
         for (Track t : testWorkout) {
             assertEquals(tracksToIterateOver.get(i), t);
             i++;
         }
-//        for (int i = 0; i < trackList.size(); i++) {
-//            Track track = tracksIterator.next();
-//            Track sameTrack = tracksToIterateOver.get(i);
-//            assertTrue(track.equals(sameTrack));
-//        }
     }
 }
 

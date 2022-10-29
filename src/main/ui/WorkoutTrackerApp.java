@@ -4,7 +4,11 @@ import exceptions.UnrealisticRepsException;
 import model.Move;
 import model.Track;
 import model.Workout;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 // Workout tracker application
@@ -13,12 +17,18 @@ import java.util.Scanner;
 
 // Pilates Workout Tracker Application
 public class WorkoutTrackerApp {
-    private Scanner userInput = new Scanner(System.in);
+    private static final String JSON_FILE = "./data/workout.json";
+    private Scanner userInput;
     private Workout workout;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
 
     // EFFECTS: runs the workout tracker application
     public WorkoutTrackerApp() {
+        userInput = new Scanner(System.in);
+        jsonWriter = new JsonWriter(JSON_FILE);
+        jsonReader = new JsonReader(JSON_FILE);
         trackWorkout();
     }
 
@@ -34,6 +44,7 @@ public class WorkoutTrackerApp {
             userEntry = userInput.nextInt();
 
             if (userEntry == 3) {
+                showOptionToSaveWorkout(workout);
                 isRunning = false;
             } else {
                 processEntry(userEntry);
@@ -47,7 +58,7 @@ public class WorkoutTrackerApp {
     private void showMainMenu() {
         System.out.println("\nPlease select one of the following options:");
         System.out.println("\t1. Create a new workout");
-        System.out.println("\t2. View saved workout");
+        System.out.println("\t2. Load saved workout");
         System.out.println("\t3. Quit application");
     }
 
@@ -57,15 +68,56 @@ public class WorkoutTrackerApp {
         if (userEntry == 1) {
             createWorkout();
         } else if (userEntry == 2) {
-            viewSavedWorkout();
+            loadSavedWorkout();
         } else {
             System.out.println("Invalid selection" + "\nPlease try again");
         }
     }
 
-    // EFFECTS: prints out the tracks of the previously saved workout
-    private void viewSavedWorkout() {
-        // stub
+    private void showOptionToSaveWorkout(Workout workout) {
+        System.out.println("Would you like to save your workout " + "\"" + workout.getWorkoutTitle() + "\"" + " ?");
+        System.out.println("y -> yes");
+        System.out.println("n -> no");
+
+        String decision = userInput.next();
+        if (decision.equals("y")) {
+            saveWorkout(workout);
+        } else if (decision.equals("n")) {
+            System.out.println("Your workout " + "\"" + workout.getWorkoutTitle() + "\"" + " will not be saved");
+            // TODO: clear json file?
+        } else {
+            System.out.println("Invalid selection, please try again");
+            showOptionToSaveWorkout(workout);
+        }
+    }
+
+    // EFFECTS: saves the workout to file
+    private void saveWorkout(Workout workout) {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(workout);
+            jsonWriter.close();
+            System.out.println("\"" + workout.getWorkoutTitle() + "\"" + " has been saved to " + JSON_FILE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to save " + "\"" + workout.getWorkoutTitle() + "\"" + " to " + JSON_FILE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workout from file and its saved tracks
+    private void loadSavedWorkout() {
+        try {
+            Workout savedWorkout = jsonReader.read();
+            workout = savedWorkout;
+            System.out.println("Loaded " + "\"" + savedWorkout.getWorkoutTitle() + "\"" + " from " + JSON_FILE);
+            nextOptionsAfterWorkout();
+        } catch (IOException e) {
+            System.out.println("An error occurred when trying to load " + "\"" + workout.getWorkoutTitle() + "\""
+                    + " from " + JSON_FILE);
+        } catch (UnrealisticRepsException e) {
+            System.out.println("\"" + workout.getWorkoutTitle() + "\""
+                     + " contains a move with an invalid number of reps!");
+        }
     }
 
     // MODIFIES: this
@@ -92,8 +144,11 @@ public class WorkoutTrackerApp {
             addTrack();
         } else if (userEntry == 2) {
             viewTracks();
-        } else {
+        } else if (userEntry == 3) {
             //showMainMenu();
+        } else {
+            System.out.println("Invalid selection, please try again");
+            nextOptionsAfterWorkout();
         }
     }
 
@@ -141,8 +196,10 @@ public class WorkoutTrackerApp {
             getTrackToViewFromUserInput();
         } else if (userEntry == 2) {
             deleteTrack();
-        } else {
+        } else if (userEntry == 3) {
             //showMainMenu();
+        } else {
+            System.out.println("Invalid selection, please try again.");
         }
     }
 
@@ -161,7 +218,7 @@ public class WorkoutTrackerApp {
             for (Move m : trackToView) {
                 int moveNumber = trackToView.getMoves().indexOf(m);
                 moveNumber++;
-                System.out.println(moveNumber + ". Name: " + m.getName() + " Reps: " + m.getReps());
+                System.out.println(moveNumber + ". Name: " + m.getName() + ", Reps: " + m.getReps());
             }
         }
         showOptionsAfterViewTrackAndProcessSelectedOption(trackToView);

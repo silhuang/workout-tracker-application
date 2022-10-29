@@ -2,7 +2,7 @@
   "workout title": "Workout with illegal move in track",
   "tracks": [
     {
-      "track title": "track",
+      "trackTitle": "track",
       "moves": [{
         "name": "burpees",
         "reps": -30
