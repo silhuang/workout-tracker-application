@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+// Code referenced from JsonSerializationDemo, GitHub link below:
+// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+
 // Represents a writer that writes a JSON representation of a workout to file
 public class JsonWriter {
     private String destination;

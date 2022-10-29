@@ -14,6 +14,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+// Code referenced from JsonSerializationDemo, GitHub link below:
+// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+
+// Represents a reader that reads a workout stored in JSON data from file
 public class JsonReader {
     private String source;
 

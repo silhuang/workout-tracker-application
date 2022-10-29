@@ -38,13 +38,9 @@ public class Workout implements Iterable<Track>, Writable {
     // MODIFIES: this
     // EFFECTS: if track exists in the workout, delete it from the set of tracks,
     public boolean deleteTrack(Track track) {
-        String trackToDelete = track.getTrackTitle();
-        for (Track t : tracks) {
-            String trackTitle = t.getTrackTitle();
-            if (trackToDelete.equals(trackTitle)) {
-                tracks.remove(track);
-                return true;
-            }
+        if (tracks.contains(track)) {
+            tracks.remove(track);
+            return true;
         }
         return false;
     }

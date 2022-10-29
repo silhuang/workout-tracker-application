@@ -74,6 +74,7 @@ public class WorkoutTrackerApp {
         }
     }
 
+    // EFFECTS: presents users with the option to save their workout before quitting the application
     private void showOptionToSaveWorkout(Workout workout) {
         System.out.println("Would you like to save your workout " + "\"" + workout.getWorkoutTitle() + "\"" + " ?");
         System.out.println("y -> yes");
@@ -203,6 +204,7 @@ public class WorkoutTrackerApp {
         }
     }
 
+    // EFFECTS: processes user entry to get the track they would like to view
     private void getTrackToViewFromUserInput() {
         System.out.println("Please enter the number corresponding to the track you would like to view:");
         int trackNumber = userInput.nextInt();
@@ -211,6 +213,7 @@ public class WorkoutTrackerApp {
         printMovesInTrack(trackToView);
     }
 
+    // EFFECTS: prints out all the moves in the selected track to view
     private void printMovesInTrack(Track trackToView) {
         if (trackToView.getMoves().isEmpty()) {
             System.out.println(trackToView.getTrackTitle() + "currently has no moves");
@@ -225,6 +228,7 @@ public class WorkoutTrackerApp {
 
     }
 
+    // EFFECTS: presents user with options regarding moves and processes their selection
     private void showOptionsAfterViewTrackAndProcessSelectedOption(Track trackToView) {
         System.out.println("Please select how you would like to proceed:");
         System.out.println("\t 1. Add a move");
@@ -242,6 +246,7 @@ public class WorkoutTrackerApp {
         viewTracks();
     }
 
+    // EFFECTS: creates a new move according to user input and adds it to the selected track
     private void processOption1(Track trackToView) {
         System.out.println("Please enter the name of your new move:");
         String newMoveName = userInput.next();
@@ -256,6 +261,7 @@ public class WorkoutTrackerApp {
         }
     }
 
+    // EFFECTS: deletes selected move from the track
     private void processOption2(Track trackToView) {
         System.out.println("Please enter the number corresponding to the move you would like to delete:");
         int moveToDeleteNum = userInput.nextInt();

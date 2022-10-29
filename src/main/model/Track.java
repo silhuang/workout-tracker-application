@@ -46,11 +46,6 @@ public class Track implements Iterable<Move>, Writable {
         return moves;
     }
 
-    // EFFECTS: replaces title of track with new title
-    public void setTrackTitle(String newTitle) {
-        trackTitle = newTitle;
-    }
-
     @Override
     // EFFECTS: returns an iterator over the collection of moves
     public Iterator<Move> iterator() {

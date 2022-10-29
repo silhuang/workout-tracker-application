@@ -55,12 +55,17 @@ public class JsonReaderTest extends JsonTest{
             ArrayList<Move> secondTrackMoves = secondTrack.getMoves();
 
             assertEquals("Workout with tracks", workout.getWorkoutTitle());
+            checkTrack("track1", firstTrackMoves, firstTrack);
             assertEquals("track1", firstTrack.getTrackTitle());
             assertEquals(2, firstTrackMoves.size());
+            checkMove("lunges", 10, firstTrackMoves.get(0));
             assertEquals("lunges", firstTrackMoves.get(0).getName());
             assertEquals(10, firstTrackMoves.get(0).getReps());
+            checkMove("jumping jacks", 30, firstTrackMoves.get(1));
             assertEquals("jumping jacks", firstTrackMoves.get(1).getName());
             assertEquals(30, firstTrackMoves.get(1).getReps());
+
+            checkTrack("track2", secondTrackMoves, secondTrack);
             assertEquals(0, secondTrackMoves.size());
 
         } catch (IOException e) {
