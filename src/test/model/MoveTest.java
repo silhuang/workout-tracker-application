@@ -3,6 +3,7 @@ package model;
 import exceptions.InvalidNumberOfRepsException;
 import exceptions.NegativeRepsException;
 import exceptions.UnrealisticRepsException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -107,4 +108,16 @@ public class MoveTest {
         }
     }
 
+    @Test
+    public void testToJson() {
+        try {
+            testMove = new Move("Plank Jacks", 30);
+        } catch (UnrealisticRepsException e) {
+            fail();
+        }
+
+        JSONObject testJsonMove = testMove.toJson();
+        assertEquals("Plank Jacks", testJsonMove.get("name"));
+        assertEquals(30,testJsonMove.get("reps"));
+    }
 }

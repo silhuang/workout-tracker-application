@@ -1,6 +1,8 @@
 package model;
 
 import exceptions.UnrealisticRepsException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -99,6 +101,58 @@ public class TrackTest {
             assertEquals(m, copyOfMoves.get(i));
             i++;
         }
+    }
+
+    @Test
+    public void testToJson() {
+        testTrack.addMove(firstMove);
+        testTrack.addMove(secondMove);
+
+        JSONObject jsonTrack = testTrack.toJson();
+        JSONArray jsonMoves = (JSONArray) jsonTrack.get("moves");
+
+        assertEquals("Standing Warmup", jsonTrack.get("trackTitle"));
+        assertEquals(2, jsonMoves.length());
+
+        JSONObject firstJsonMove = firstMove.toJson();
+        String firstMoveName = firstJsonMove.getString("name");
+        int firstMoveReps = firstJsonMove.getInt("reps");
+        JSONObject secondJsonMove = secondMove.toJson();
+        String secondMoveName = secondJsonMove.getString("name");
+        int secondMoveReps = secondJsonMove.getInt("reps");
+
+        assertEquals("Prep and Lift - SLOW (R)", firstMoveName);
+        assertEquals(4, firstMoveReps);
+
+        assertEquals("Prep and Lift - FAST (R)", secondMoveName);
+        assertEquals(8, secondMoveReps);
+
+    }
+
+    @Test
+    public void testToJsonTrackWithNoMoves() {
+        JSONArray jsonMoves = testTrack.movesToJson();
+        assertTrue(jsonMoves.isEmpty());
+        assertEquals(0, jsonMoves.length());
+    }
+
+    @Test
+    public void testMovesToJson() {
+        testTrack.addMove(firstMove);
+        testTrack.addMove(secondMove);
+
+        JSONArray jsonMoves = testTrack.movesToJson();
+        assertEquals(2, jsonMoves.length());
+
+        JSONObject firstJsonMove = (JSONObject) jsonMoves.get(0);
+        JSONObject secondJsonMove = (JSONObject) jsonMoves.get(1);
+
+        assertEquals("Prep and Lift - SLOW (R)", firstJsonMove.get("name"));
+        assertEquals(4, firstJsonMove.get("reps"));
+
+        assertEquals("Prep and Lift - FAST (R)", secondJsonMove.get("name"));
+        assertEquals(8, secondJsonMove.get("reps"));
+
     }
 
 }
