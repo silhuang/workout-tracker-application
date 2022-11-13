@@ -85,7 +85,6 @@ public class WorkoutTrackerApp {
             saveWorkout(workout);
         } else if (decision.equals("n")) {
             System.out.println("Your workout " + "\"" + workout.getWorkoutTitle() + "\"" + " will not be saved");
-            // TODO: clear json file?
         } else {
             System.out.println("Invalid selection, please try again");
             showOptionToSaveWorkout(workout);
