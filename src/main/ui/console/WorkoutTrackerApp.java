@@ -1,4 +1,4 @@
-package ui;
+package ui.console;
 
 import exceptions.UnrealisticRepsException;
 import model.Move;
