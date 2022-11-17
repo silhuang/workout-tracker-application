@@ -2,6 +2,8 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 // References:
 // BoxLayoutDemo.java:
@@ -15,7 +17,6 @@ public class WorkoutTrackerGUI extends JFrame {
     private Icon crunches;
     private Icon russianTwists;
     private JLabel crunchesGIF;
-    private JLabel russianTwistsGIF;
     private JButton createWorkoutButton;
     private JButton loadWorkoutButton;
     private JButton quitButton;
@@ -43,12 +44,11 @@ public class WorkoutTrackerGUI extends JFrame {
         title.setFont(new Font("SanSerif", Font.BOLD, 40));
 
         crunches = createScaledImageIcon("animations/crunches.gif");
-        russianTwists = createScaledImageIcon("animations/russian_twists.gif");
-
         crunchesGIF = new JLabel(crunches);
-        russianTwistsGIF = new JLabel(russianTwists);
 
         createWorkoutButton = new JButton("Create New Workout");
+        addFunctionalityToFirstButton(createWorkoutButton);
+
         loadWorkoutButton = new JButton("Load Saved Workout");
         quitButton = new JButton("Quit application");
 
@@ -57,11 +57,21 @@ public class WorkoutTrackerGUI extends JFrame {
         add(Box.createHorizontalStrut(5));
         addComponent(crunchesGIF, pane);
         add(Box.createHorizontalStrut(20));
-        //addComponent(russianTwistsGIF, pane);
         addComponent(createWorkoutButton, pane);
         addComponent(loadWorkoutButton, pane);
         addComponent(quitButton, pane);
 
+    }
+
+    private void addFunctionalityToFirstButton(JButton button) {
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JTextField enterWorkoutName = new JTextField();
+                enterWorkoutName.setAlignmentX(Component.RIGHT_ALIGNMENT);
+                JOptionPane.showMessageDialog(null, "Please enter the name of your new workout:");
+            }
+        });
     }
 
     // Method modified from addButton method in BoxLayoutDemoProject
@@ -91,5 +101,6 @@ public class WorkoutTrackerGUI extends JFrame {
             return null;
         }
     }
+
 
 }
