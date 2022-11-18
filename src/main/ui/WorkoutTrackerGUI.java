@@ -25,7 +25,7 @@ public class WorkoutTrackerGUI extends JPanel implements ItemListener {
         c.show(this, (String) e.getItem());
     }
 
-    public void setNewWorkoutViewer(String title) {
-        workoutViewer.setTitle(title);
-    }
+//    public void setNewWorkoutViewer(String title) {
+//        workoutViewer.setTitle(title);
+//    }
 }

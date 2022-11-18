@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
 // References:
 // BoxLayoutDemo.java:
@@ -21,14 +22,18 @@ public class MainMenuGUI extends JFrame {
     private JButton createWorkoutButton;
     private JButton loadWorkoutButton;
     private JButton quitButton;
-    private WorkoutTrackerGUI workoutTracker;
+    private WorkoutViewerGUI workoutViewer;
+    //private WorkoutTrackerGUI workoutTracker;
 
     // MODIFIES: this
     // EFFECTS: creates a new main menu screen for Workout Tracker application
     public MainMenuGUI() {
-        workoutTracker = new WorkoutTrackerGUI();
-        workoutTracker.addComponentToPane(getContentPane());
+//        workoutTracker = new WorkoutTrackerGUI();
+//        workoutTracker.addComponentToPane(getContentPane());
         addComponentsToPane(getContentPane());
+
+        workoutViewer = new WorkoutViewerGUI();
+        add(workoutViewer);
 
         pack();
         setSize(WIDTH, HEIGHT);
@@ -52,6 +57,7 @@ public class MainMenuGUI extends JFrame {
 
         createWorkoutButton = new JButton("Create New Workout");
         addFunctionalityToFirstButton(createWorkoutButton);
+        createWorkoutButton.setLayout(new CardLayout());
 
         loadWorkoutButton = new JButton("Load Saved Workout");
         quitButton = new JButton("Quit application");
@@ -74,8 +80,9 @@ public class MainMenuGUI extends JFrame {
                 String title;
                 title = JOptionPane.showInputDialog("Please enter the name of your new workout:");
                 // TODO: need to get user input
-
-                workoutTracker.setNewWorkoutViewer(title);
+                workoutViewer.setTitle(title);
+                workoutViewer.setVisible(true);
+                setVisible(false);
             }
         });
     }
