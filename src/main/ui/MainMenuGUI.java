@@ -14,26 +14,18 @@ import java.awt.event.ItemListener;
 public class MainMenuGUI extends JFrame {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 400;
-    private JComponent mainMenu;
     private JLabel title;
     private Icon crunches;
-    private Icon russianTwists;
     private JLabel crunchesGIF;
     private JButton createWorkoutButton;
     private JButton loadWorkoutButton;
     private JButton quitButton;
     private WorkoutViewerGUI workoutViewer;
-    //private WorkoutTrackerGUI workoutTracker;
 
     // MODIFIES: this
     // EFFECTS: creates a new main menu screen for Workout Tracker application
     public MainMenuGUI() {
-//        workoutTracker = new WorkoutTrackerGUI();
-//        workoutTracker.addComponentToPane(getContentPane());
         addComponentsToPane(getContentPane());
-
-        workoutViewer = new WorkoutViewerGUI();
-        add(workoutViewer);
 
         pack();
         setSize(WIDTH, HEIGHT);
@@ -70,7 +62,6 @@ public class MainMenuGUI extends JFrame {
         addComponent(createWorkoutButton, pane);
         addComponent(loadWorkoutButton, pane);
         addComponent(quitButton, pane);
-
     }
 
     private void addFunctionalityToFirstButton(JButton button) {
@@ -80,7 +71,8 @@ public class MainMenuGUI extends JFrame {
                 String title;
                 title = JOptionPane.showInputDialog("Please enter the name of your new workout:");
                 // TODO: need to get user input
-                workoutViewer.setTitle(title);
+                workoutViewer = new WorkoutViewerGUI();
+                //workoutViewer.setTitle(title);
                 workoutViewer.setVisible(true);
                 setVisible(false);
             }

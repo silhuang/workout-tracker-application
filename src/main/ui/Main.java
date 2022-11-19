@@ -1,5 +1,7 @@
 package ui;
 
+import javax.swing.*;
+
 public class Main {
     // Method based on main method in CustomIconDemo class:
     // https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/
@@ -7,10 +9,22 @@ public class Main {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new MainMenuGUI();
+                createAndShowGUI();
             }
         });
 
 
+    }
+
+    private static void createAndShowGUI() {
+        JFrame frame = new JFrame("Workout Tracker App");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        WorkoutViewerGUI workoutViewer = new WorkoutViewerGUI();
+        frame.setJMenuBar(workoutViewer.createMenuBar());
+        frame.getContentPane().add(workoutViewer.getSplitPane());
+
+        frame.pack();
+        frame.setSize(500, 400);
+        frame.setVisible(true);
     }
 }

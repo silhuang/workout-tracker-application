@@ -1,32 +1,74 @@
 package ui;
 
 import javax.swing.*;
-import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
-
-public class WorkoutViewerGUI extends JPanel {
+public class WorkoutViewerGUI extends JPanel implements ListSelectionListener {
     private static final int WIDTH = 500;
-    private static final int HEIGHT = 400;
-    private Frame viewingFrame;
+    private static final int HEIGHT = 700;
+    private JList trackList;
+    private JList moveList;
+    private JSplitPane splitPane;
+    private JMenuBar menuBar;
+    private JMenu trackMenu;
+    private JMenu moveMenu;
+    private MenuItem addTrackMenuItem;
+    private MenuItem deleteTrackMenuItem;
+    private MenuItem addMoveMenuItem;
+    private MenuItem deleteMoveMenuItem;
+    private JMenu quitApplication;
+    private JMenu loadApplication;
 
     public WorkoutViewerGUI() {
-        viewingFrame = new JFrame();
-        viewingFrame.pack();
-        viewingFrame.setSize(WIDTH, HEIGHT);
-        //pack();
-        setLayout(new FlowLayout());
-        setSize(WIDTH, HEIGHT);
-        //setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
-        viewingFrame.add(this);
+        trackList = new JList<>();
+        trackList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        trackList.addListSelectionListener(this);
+
+        JScrollPane tracksScrollPane = new JScrollPane(trackList);
+
+        moveList = new JList<>();
+        moveList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        JScrollPane movesScrollPane = new JScrollPane(moveList);
+
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, trackList, moveList);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setDividerLocation(200);
+    }
+
+    public JMenuBar createMenuBar() {
+        menuBar = new JMenuBar();
+
+        trackMenu = new JMenu("Track Options");
+        addTrackMenuItem = new MenuItem("Add new track");
+        deleteTrackMenuItem = new MenuItem("Delete track");
+
+        moveMenu = new JMenu("Move Options");
+        addMoveMenuItem = new MenuItem("Add new move");
+        deleteMoveMenuItem = new Menu("Delete move");
+
+        quitApplication = new JMenu("Quit");
+        loadApplication = new JMenu("Load Saved Workout");
+
+        menuBar.add(trackMenu);
+        menuBar.add(moveMenu);
+        menuBar.add(quitApplication);
+        menuBar.add(loadApplication);
+
+        return menuBar;
+    }
+
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        trackList = (JList) e.getSource();
+
 
     }
 
-    public void setTitle(String t) {
-        viewingFrame.setTitle(t);
-//        Border title = BorderFactory.createTitledBorder(t);
-//        setBorder(title);
+    public JSplitPane getSplitPane() {
+        return splitPane;
     }
 }
