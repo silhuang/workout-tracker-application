@@ -17,11 +17,11 @@ public class Main {
     }
 
     private static void createAndShowGUI() {
-        JFrame frame = new JFrame("Workout Tracker App");
+        JFrame frame = new ButtonPane("Workout Tracker App");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        WorkoutViewerGUI workoutViewer = new WorkoutViewerGUI();
-        frame.setJMenuBar(workoutViewer.createMenuBar());
-        frame.getContentPane().add(workoutViewer.getSplitPane());
+//        WorkoutViewerGUI workoutViewer = new WorkoutViewerGUI();
+//        frame.setJMenuBar(workoutViewer.createImage);
+//        frame.getContentPane().add(workoutViewer.getSplitPane());
 
         frame.pack();
         frame.setSize(500, 400);

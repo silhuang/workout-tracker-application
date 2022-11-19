@@ -38,7 +38,7 @@ public class WorkoutViewerGUI extends JPanel implements ListSelectionListener {
 
         JScrollPane movesScrollPane = new JScrollPane(moveList);
 
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, trackList, moveList);
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tracksScrollPane, movesScrollPane);
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(200);
     }
@@ -47,14 +47,13 @@ public class WorkoutViewerGUI extends JPanel implements ListSelectionListener {
         menuBar = new JMenuBar();
 
         trackMenu = new JMenu("Track Options");
-        //TODO: didn't show up
         addTrackMenuItem = new MenuItem("Add new track");
         deleteTrackMenuItem = new MenuItem("Delete track");
+        // TODO: unable to call add method on JMenu object - can't be casted to suggested types either
         //trackMenu.add((PopupMenu) addTrackMenuItem);
 
 
         moveMenu = new JMenu("Move Options");
-        //TODO: didn't show up
         addMoveMenuItem = new MenuItem("Add new move");
         deleteMoveMenuItem = new Menu("Delete move");
 
