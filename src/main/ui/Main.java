@@ -17,7 +17,7 @@ public class Main {
     }
 
     private static void createAndShowGUI() {
-        JFrame frame = new ButtonPane("Workout Tracker App");
+        JFrame frame = new MainWorkoutViewer("Workout Tracker App");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //        WorkoutViewerGUI workoutViewer = new WorkoutViewerGUI();
 //        frame.setJMenuBar(workoutViewer.createImage);

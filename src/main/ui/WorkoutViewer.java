@@ -1,32 +1,22 @@
 package ui;
 
+import model.Workout;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
-public class WorkoutViewerGUI extends JPanel implements ListSelectionListener {
+public class WorkoutViewer implements ListSelectionListener {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 700;
     private JList trackList;
     private JList moveList;
     private JSplitPane splitPane;
-    private JMenuBar menuBar;
-    private JMenu trackMenu;
-    private JMenu moveMenu;
-    private MenuItem addTrackMenuItem;
-    private MenuItem deleteTrackMenuItem;
-    private MenuItem addMoveMenuItem;
-    private MenuItem deleteMoveMenuItem;
-    private JMenu quitApplication;
-    private JMenu loadApplication;
-    private Icon crunches;
-    private JLabel crunchesGIF;
 
-    public WorkoutViewerGUI() {
+    public WorkoutViewer() {
         trackList = new JList<>();
         trackList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         trackList.addListSelectionListener(this);
@@ -41,50 +31,6 @@ public class WorkoutViewerGUI extends JPanel implements ListSelectionListener {
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tracksScrollPane, movesScrollPane);
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(200);
-    }
-
-    public JMenuBar createMenuBar() {
-        menuBar = new JMenuBar();
-
-        trackMenu = new JMenu("Track Options");
-        addTrackMenuItem = new MenuItem("Add new track");
-        deleteTrackMenuItem = new MenuItem("Delete track");
-        // TODO: unable to call add method on JMenu object - can't be casted to suggested types either
-        //trackMenu.add((PopupMenu) addTrackMenuItem);
-
-
-        moveMenu = new JMenu("Move Options");
-        addMoveMenuItem = new MenuItem("Add new move");
-        deleteMoveMenuItem = new Menu("Delete move");
-
-        quitApplication = new JMenu("Quit Application");
-        askToSave(quitApplication);
-
-
-        crunches = createScaledImageIcon("animations/crunches.gif");
-        crunchesGIF = new JLabel(crunches);
-        loadApplication = new JMenu("Load Saved Workout");
-
-        menuBar.add(trackMenu);
-        menuBar.add(moveMenu);
-        menuBar.add(quitApplication);
-        menuBar.add(loadApplication);
-
-        return menuBar;
-    }
-
-    //TODO: confirm Dialog not showing up
-    private void askToSave(JMenu m) {
-        m.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showConfirmDialog(null,
-                        "Would you like to save your workout?",
-                        null, JOptionPane.YES_NO_CANCEL_OPTION);
-
-            }
-        });
-
     }
 
 

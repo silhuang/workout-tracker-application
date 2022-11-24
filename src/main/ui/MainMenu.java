@@ -4,14 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 
 // References:
 // BoxLayoutDemo.java:
 // https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/
 // uiswing/examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java
 // https://mkyong.com/swing/java-swing-joptionpane-showinputdialog-example/
-public class MainMenuGUI extends JFrame {
+public class MainMenu extends JFrame {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 400;
     private JLabel title;
@@ -20,11 +19,10 @@ public class MainMenuGUI extends JFrame {
     private JButton createWorkoutButton;
     private JButton loadWorkoutButton;
     private JButton quitButton;
-    private WorkoutViewerGUI workoutViewer;
 
     // MODIFIES: this
     // EFFECTS: creates a new main menu screen for Workout Tracker application
-    public MainMenuGUI() {
+    public MainMenu() {
         addComponentsToPane(getContentPane());
 
         pack();
@@ -71,9 +69,9 @@ public class MainMenuGUI extends JFrame {
                 String title;
                 title = JOptionPane.showInputDialog("Please enter the name of your new workout:");
                 // TODO: need to get user input
-                workoutViewer = new WorkoutViewerGUI();
+                //workoutViewer = new WorkoutViewerGUI();
                 //workoutViewer.setTitle(title);
-                workoutViewer.setVisible(true);
+                //workoutViewer.setVisible(true);
                 setVisible(false);
             }
         });
