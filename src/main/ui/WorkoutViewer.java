@@ -11,10 +11,11 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 //References:
 // https://www.youtube.com/watch?v=KOI1WbkKUpQ - Override toString method in Track and Move class
-public class WorkoutViewer {
+public class WorkoutViewer implements ListSelectionListener {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 700;
     private JSplitPane splitPane;
@@ -78,6 +79,19 @@ public class WorkoutViewer {
 
     }
 
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        Track newSelectedTrack = (Track) tracks.getElementAt(trackList.getSelectedIndex());
+        ArrayList<Move> movesOfSelectedTrack = newSelectedTrack.getMoves();
+
+        moves.removeAllElements();
+        if (e.getValueIsAdjusting()) {
+            for (Move m : movesOfSelectedTrack) {
+                moves.addElement(m);
+            }
+        }
+    }
+
 
     public JSplitPane getSplitPane() {
         return splitPane;
@@ -121,5 +135,6 @@ public class WorkoutViewer {
             return null;
         }
     }
+
 
 }

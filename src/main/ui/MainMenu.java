@@ -68,10 +68,6 @@ public class MainMenu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String title;
                 title = JOptionPane.showInputDialog("Please enter the name of your new workout:");
-                // TODO: need to get user input
-                //workoutViewer = new WorkoutViewerGUI();
-                //workoutViewer.setTitle(title);
-                //workoutViewer.setVisible(true);
                 setVisible(false);
             }
         });
