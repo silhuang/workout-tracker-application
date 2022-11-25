@@ -1,6 +1,12 @@
 package ui;
 
 import exceptions.UnrealisticRepsException;
+import model.Move;
+import model.Track;
+import model.Workout;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+import ui.console.WorkoutTrackerApp;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -11,6 +17,10 @@ import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
@@ -25,11 +35,16 @@ public class MainWorkoutViewer extends JFrame implements ListSelectionListener {
     private JMenu quitApplication;
     private JButton loadApplication;
     private WorkoutViewer workoutViewer;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+    private static final String JSON_FILE = "./data/workout.json";
 
 
     public MainWorkoutViewer(String title) {
         setTitle(title);
         workoutViewer = new WorkoutViewer();
+        jsonWriter = new JsonWriter(JSON_FILE);
+        jsonReader = new JsonReader(JSON_FILE);
         JSplitPane top = workoutViewer.getSplitPane();
         top.setBorder(null);
 
@@ -44,12 +59,12 @@ public class MainWorkoutViewer extends JFrame implements ListSelectionListener {
         label.add(deleteMoveButton);
 
         entirePane = new JSplitPane(VERTICAL_SPLIT, top, label);
-
         entirePane.setOneTouchExpandable(true);
         entirePane.setDividerLocation(250);
 
         getContentPane().add(entirePane);
         setJMenuBar(createMenuBar());
+        askToSave();
     }
 
     private void createTrackButtons() {
@@ -101,49 +116,64 @@ public class MainWorkoutViewer extends JFrame implements ListSelectionListener {
                 deleteMoveButton.setEnabled(false);
             }
         }
-
-
     }
 
     public JMenuBar createMenuBar() {
         menuBar = new JMenuBar();
-
         loadApplication = new JButton("Load Saved Workout");
-
-        // TODO: implement window closing event for quit & save function
-        quitApplication = new JMenu("Quit Application");
-        askToSave(quitApplication);
-
-
-        menuBar.add(quitApplication);
+        addLoadWorkoutFunction();
         menuBar.add(loadApplication);
-
         return menuBar;
     }
 
-    private void askToSave(JMenu m) {
-        m.addMenuListener(new MenuListener() {
+    private void addLoadWorkoutFunction() {
+        loadApplication.addActionListener(new ActionListener() {
             @Override
-            public void menuSelected(MenuEvent e) {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Workout savedWorkout = jsonReader.read();
+                    for (Track t : savedWorkout) {
+                        workoutViewer.getTracks().addElement(t);
+                        for (Move m : t.getMoves()) {
+                            workoutViewer.getMoves().addElement(m);
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null,
+                            "Loaded " + "\"" + savedWorkout.getWorkoutTitle() + "\"" + " from " + JSON_FILE);
+                } catch (IOException exception) {
+                    JOptionPane.showMessageDialog(null,
+                            "An error occurred when trying to load saved workout from " + JSON_FILE);
+                } catch (UnrealisticRepsException exception) {
+                    System.out.println("The saved workout contains a move with an invalid number of reps!");
+                }
+            }
+        });
+    }
+
+
+    private void askToSave() {
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
                 int selection = JOptionPane.showConfirmDialog(null,
                         "Would you like to save your workout?",
                         null, JOptionPane.YES_NO_CANCEL_OPTION);
                 if (selection == JOptionPane.YES_OPTION) {
-
-                } else if (selection == JOptionPane.NO_OPTION) {
-
+                    Workout workoutToSave = workoutViewer.getWorkout();
+                    try {
+                        jsonWriter.open();
+                        jsonWriter.write(workoutToSave);
+                        jsonWriter.close();
+                        JOptionPane.showMessageDialog(null,
+                                "\"" + workoutToSave.getWorkoutTitle() + "\"" + " has been saved to " + JSON_FILE);
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "Unable to save " + "\"" + workoutToSave.getWorkoutTitle() + "\"" + " to " + JSON_FILE);
+                    }
                 }
             }
 
-            @Override
-            public void menuDeselected(MenuEvent e) {
-
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-
-            }
+            ;
         });
     }
 
@@ -166,5 +196,6 @@ public class MainWorkoutViewer extends JFrame implements ListSelectionListener {
         }
     }
 
-
 }
+
+

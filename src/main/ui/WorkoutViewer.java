@@ -99,6 +99,10 @@ public class WorkoutViewer {
         return moves;
     }
 
+    public Workout getWorkout() {
+        return workout;
+    }
+
     // Method based on createImageIcon method from CustomIconDemo class:
     // https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html
     // Additional code referenced from:

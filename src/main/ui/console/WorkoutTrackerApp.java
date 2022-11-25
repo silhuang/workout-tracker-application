@@ -92,7 +92,7 @@ public class WorkoutTrackerApp {
     }
 
     // EFFECTS: saves the workout to file
-    private void saveWorkout(Workout workout) {
+    public void saveWorkout(Workout workout) {
         try {
             jsonWriter.open();
             jsonWriter.write(workout);
