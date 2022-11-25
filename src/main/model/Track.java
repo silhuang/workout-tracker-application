@@ -47,6 +47,12 @@ public class Track implements Iterable<Move>, Writable {
     }
 
     @Override
+    // EFFECTS: returns name of track rather than its address
+    public String toString() {
+        return trackTitle;
+    }
+
+    @Override
     // EFFECTS: returns an iterator over the collection of moves
     public Iterator<Move> iterator() {
         return moves.iterator();

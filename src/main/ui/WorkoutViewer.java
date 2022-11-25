@@ -1,5 +1,8 @@
 package ui;
 
+import exceptions.UnrealisticRepsException;
+import model.Move;
+import model.Track;
 import model.Workout;
 
 import javax.swing.*;
@@ -9,21 +12,30 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class WorkoutViewer implements ListSelectionListener {
+//References:
+// https://www.youtube.com/watch?v=KOI1WbkKUpQ - Override toString method in Track and Move class
+public class WorkoutViewer {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 700;
-    private JList trackList;
-    private JList moveList;
     private JSplitPane splitPane;
+    private Workout workout;
+    private DefaultListModel tracks;
+    private JList trackList;
+    private DefaultListModel moves;
+    private JList moveList;
+
+
 
     public WorkoutViewer() {
-        trackList = new JList<>();
+        workout = new Workout("myWorkout");
+        tracks = new DefaultListModel<>();
+        trackList = new JList<>(tracks);
         trackList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        trackList.addListSelectionListener(this);
 
         JScrollPane tracksScrollPane = new JScrollPane(trackList);
 
-        moveList = new JList<>();
+        moves = new DefaultListModel<>();
+        moveList = new JList<>(moves);
         moveList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane movesScrollPane = new JScrollPane(moveList);
@@ -33,16 +45,58 @@ public class WorkoutViewer implements ListSelectionListener {
         splitPane.setDividerLocation(200);
     }
 
+    public void addTrackToTrackList() {
+        String trackTitle;
+        trackTitle = JOptionPane.showInputDialog("Please enter the name of your new track:");
+        Track newTrack = new Track(trackTitle);
+        workout.addTrack(newTrack);
+        tracks.addElement(newTrack);
+    }
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-        trackList = (JList) e.getSource();
+    public void deleteTrackFromTrackList() {
+        Track trackToDelete = (Track) tracks.getElementAt(trackList.getSelectedIndex());
+        JOptionPane.showMessageDialog(null, "Are you sure you would like to delete this track?");
+        workout.deleteTrack(trackToDelete);
+        tracks.removeElement(trackToDelete);
+    }
 
+    public void addMoveToMoveList() throws UnrealisticRepsException {
+        Track selectedTrack = (Track) tracks.getElementAt(trackList.getSelectedIndex());
+        String name = JOptionPane.showInputDialog("Please enter the name of your new move:");
+        int reps = Integer.parseInt(JOptionPane.showInputDialog("Please enter the number of reps of your new move:"));
+        Move newMove = new Move(name, reps);
+        selectedTrack.addMove(newMove);
+        moves.addElement(newMove);
+    }
+
+    public void deleteMoveFromMoveList() {
+        Track selectedTrack = (Track) tracks.getElementAt(trackList.getSelectedIndex());
+        Move moveToDelete = (Move) moves.getElementAt(moveList.getSelectedIndex());
+        JOptionPane.showMessageDialog(null, "Are you sure you would like to delete this move?");
+        selectedTrack.deleteMove(moveToDelete);
+        moves.removeElement(moveToDelete);
 
     }
 
+
     public JSplitPane getSplitPane() {
         return splitPane;
+    }
+
+    public JList getTrackList() {
+        return trackList;
+    }
+
+    public DefaultListModel getTracks() {
+        return tracks;
+    }
+
+    public JList getMoveList() {
+        return moveList;
+    }
+
+    public DefaultListModel getMoves() {
+        return moves;
     }
 
     // Method based on createImageIcon method from CustomIconDemo class:
@@ -63,4 +117,5 @@ public class WorkoutViewer implements ListSelectionListener {
             return null;
         }
     }
+
 }

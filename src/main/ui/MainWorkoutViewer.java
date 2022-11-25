@@ -1,37 +1,40 @@
 package ui;
 
+import exceptions.UnrealisticRepsException;
+
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
-public class MainWorkoutViewer extends JFrame {
+public class MainWorkoutViewer extends JFrame implements ListSelectionListener {
     private JSplitPane entirePane;
-    protected JButton addTrackButton;
-    protected JButton deleteTrackButton;
-    protected JButton addMoveButton;
-    protected JButton deleteMoveButton;
+    private JButton addTrackButton;
+    private JButton deleteTrackButton;
+    private JButton addMoveButton;
+    private JButton deleteMoveButton;
     private JLabel label;
     private JMenuBar menuBar;
     private JMenu quitApplication;
-    private JMenu loadApplication;
+    private JButton loadApplication;
+    private WorkoutViewer workoutViewer;
 
 
     public MainWorkoutViewer(String title) {
         setTitle(title);
-
-        WorkoutViewer workoutViewer = new WorkoutViewer();
+        workoutViewer = new WorkoutViewer();
         JSplitPane top = workoutViewer.getSplitPane();
         top.setBorder(null);
 
-        addTrackButton = new JButton("Add new track");
-        deleteTrackButton = new JButton("Delete track");
-
-        addMoveButton = new JButton("Add new move");
-        deleteMoveButton = new JButton("Delete move");
+        createTrackButtons();
+        createMoveButtons();
 
         label = new JLabel();
         label.setLayout(new GridLayout(2, 2));
@@ -49,10 +52,63 @@ public class MainWorkoutViewer extends JFrame {
         setJMenuBar(createMenuBar());
     }
 
+    private void createTrackButtons() {
+        addTrackButton = new JButton("Add new track");
+        addTrackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                workoutViewer.addTrackToTrackList();
+            }
+        });
+
+        deleteTrackButton = new JButton("Delete track");
+        deleteTrackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                workoutViewer.deleteTrackFromTrackList();
+            }
+        });
+    }
+
+    private void createMoveButtons() {
+        addMoveButton = new JButton("Add new move");
+        addMoveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    workoutViewer.addMoveToMoveList();
+                } catch (UnrealisticRepsException ex) {
+                    System.out.println("An unrealistic number of reps has been entered, please try again!");
+                }
+            }
+        });
+        deleteMoveButton = new JButton("Delete move");
+        deleteMoveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                workoutViewer.deleteMoveFromMoveList();
+            }
+        });
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()) {
+            if (workoutViewer.getTracks().isEmpty() || workoutViewer.getTrackList().getSelectedIndex() == -1) {
+                deleteTrackButton.setEnabled(false);
+            }
+            if (workoutViewer.getMoves().isEmpty() || workoutViewer.getTrackList().getSelectedIndex() == -1) {
+                deleteMoveButton.setEnabled(false);
+            }
+        }
+
+
+    }
+
     public JMenuBar createMenuBar() {
         menuBar = new JMenuBar();
 
-        loadApplication = new JMenu("Load Saved Workout");
+        loadApplication = new JButton("Load Saved Workout");
 
         // TODO: implement window closing event for quit & save function
         quitApplication = new JMenu("Quit Application");

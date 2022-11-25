@@ -52,6 +52,10 @@ public class Move implements Writable {
         return reps;
     }
 
+    @Override
+    public String toString() {
+        return "Name: " + name + "   Reps: " + reps;
+    }
 
     @Override
     // EFFECTS: returns this move as a JSON object
