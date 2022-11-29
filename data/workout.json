@@ -1,1 +1,1 @@
-{"workout title":"myWorkout","tracks":[{"moves":[{"reps":10,"name":"move1"}],"trackTitle":"track"},{"moves":[{"reps":10,"name":"blah"}],"trackTitle":"track2"}]}
+{"workout title":"myWorkout","tracks":[{"moves":[{"reps":10,"name":"m1"},{"reps":20,"name":"m2"}],"trackTitle":"t1"},{"moves":[{"reps":40,"name":"move1"}],"trackTitle":"t2"}]}

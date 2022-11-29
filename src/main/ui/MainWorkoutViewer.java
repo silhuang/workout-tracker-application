@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
-public class MainWorkoutViewer extends JFrame implements ListSelectionListener {
+public class MainWorkoutViewer extends JFrame {
     private JSplitPane entirePane;
     private JButton addTrackButton;
     private JButton deleteTrackButton;
@@ -97,6 +97,7 @@ public class MainWorkoutViewer extends JFrame implements ListSelectionListener {
                 }
             }
         });
+
         deleteMoveButton = new JButton("Delete move");
         deleteMoveButton.addActionListener(new ActionListener() {
             @Override
@@ -106,17 +107,17 @@ public class MainWorkoutViewer extends JFrame implements ListSelectionListener {
         });
     }
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-        if (!e.getValueIsAdjusting()) {
-            if (workoutViewer.getTracks().isEmpty() || workoutViewer.getTrackList().getSelectedIndex() == -1) {
-                deleteTrackButton.setEnabled(false);
-            }
-            if (workoutViewer.getMoves().isEmpty() || workoutViewer.getTrackList().getSelectedIndex() == -1) {
-                deleteMoveButton.setEnabled(false);
-            }
-        }
-    }
+//    @Override
+//    public void valueChanged(ListSelectionEvent e) {
+//        if (!e.getValueIsAdjusting()) {
+//            if (workoutViewer.getTracks().isEmpty() || workoutViewer.getTrackList().getSelectedIndex() == -1) {
+//                deleteTrackButton.setEnabled(false);
+//            }
+//            if (workoutViewer.getMoves().isEmpty() || workoutViewer.getTrackList().getSelectedIndex() == -1) {
+//                deleteMoveButton.setEnabled(false);
+//            }
+//        }
+//    }
 
     public JMenuBar createMenuBar() {
         menuBar = new JMenuBar();

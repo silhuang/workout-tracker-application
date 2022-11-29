@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 //References:
 // https://www.youtube.com/watch?v=KOI1WbkKUpQ - Override toString method in Track and Move class
-public class WorkoutViewer implements ListSelectionListener {
+public class WorkoutViewer {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 700;
     private JSplitPane splitPane;
@@ -24,19 +24,21 @@ public class WorkoutViewer implements ListSelectionListener {
     private JList trackList;
     private DefaultListModel moves;
     private JList moveList;
-
+    private ListSelectionModel listSelectionModel;
 
 
     public WorkoutViewer() {
         workout = new Workout("myWorkout");
         tracks = new DefaultListModel<>();
-        trackList = new JList<>(tracks);
+        trackList = new JList(tracks);
         trackList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listSelectionModel = trackList.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new MovesHandler());
 
         JScrollPane tracksScrollPane = new JScrollPane(trackList);
 
         moves = new DefaultListModel<>();
-        moveList = new JList<>(moves);
+        moveList = new JList(moves);
         moveList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane movesScrollPane = new JScrollPane(moveList);
@@ -45,6 +47,23 @@ public class WorkoutViewer implements ListSelectionListener {
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(200);
     }
+
+    class MovesHandler implements ListSelectionListener {
+
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+
+            Track newSelectedTrack = (Track) tracks.getElementAt(trackList.getSelectedIndex());
+            ArrayList<Move> movesOfSelectedTrack = newSelectedTrack.getMoves();
+
+            moves.removeAllElements();
+            for (Move m : movesOfSelectedTrack) {
+                moves.addElement(m);
+            }
+
+        }
+    }
+
 
     public void addTrackToTrackList() {
         String trackTitle;
@@ -79,18 +98,7 @@ public class WorkoutViewer implements ListSelectionListener {
 
     }
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-        Track newSelectedTrack = (Track) tracks.getElementAt(trackList.getSelectedIndex());
-        ArrayList<Move> movesOfSelectedTrack = newSelectedTrack.getMoves();
 
-        moves.removeAllElements();
-        if (e.getValueIsAdjusting()) {
-            for (Move m : movesOfSelectedTrack) {
-                moves.addElement(m);
-            }
-        }
-    }
 
 
     public JSplitPane getSplitPane() {
