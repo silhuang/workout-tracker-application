@@ -50,6 +50,12 @@ public class Workout implements Iterable<Track>, Writable {
         return workoutTitle;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the title of the workout to the given title
+    public void setWorkoutTitle(String title) {
+        this.workoutTitle = title;
+    }
+
     // EFFECTS: returns the set of tracks added to the workout so far
     public ArrayList<Track> getTracks() {
         return tracks;

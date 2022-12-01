@@ -16,8 +16,6 @@ import java.util.ArrayList;
 //References:
 // https://www.youtube.com/watch?v=KOI1WbkKUpQ - Override toString method in Track and Move class
 public class WorkoutViewer {
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 700;
     private JSplitPane splitPane;
     private Workout workout;
     private DefaultListModel tracks;
@@ -67,7 +65,9 @@ public class WorkoutViewer {
 
     public void addTrackToTrackList() {
         String trackTitle;
-        trackTitle = JOptionPane.showInputDialog("Please enter the name of your new track:");
+        trackTitle = JOptionPane.showInputDialog(null,
+                "Please enter the name of your new track:", null,
+                JOptionPane.OK_CANCEL_OPTION);
         Track newTrack = new Track(trackTitle);
         workout.addTrack(newTrack);
         tracks.addElement(newTrack);
@@ -75,15 +75,21 @@ public class WorkoutViewer {
 
     public void deleteTrackFromTrackList() {
         Track trackToDelete = (Track) tracks.getElementAt(trackList.getSelectedIndex());
-        JOptionPane.showMessageDialog(null, "Are you sure you would like to delete this track?");
+        JOptionPane.showConfirmDialog(null,
+                "Are you sure you would like to delete this track?", null,
+                JOptionPane.YES_NO_OPTION);
         workout.deleteTrack(trackToDelete);
         tracks.removeElement(trackToDelete);
     }
 
     public void addMoveToMoveList() throws UnrealisticRepsException {
         Track selectedTrack = (Track) tracks.getElementAt(trackList.getSelectedIndex());
-        String name = JOptionPane.showInputDialog("Please enter the name of your new move:");
-        int reps = Integer.parseInt(JOptionPane.showInputDialog("Please enter the number of reps of your new move:"));
+        String name = JOptionPane.showInputDialog(null,
+                "Please enter the name of your new move:",
+                null, JOptionPane.OK_CANCEL_OPTION);
+        int reps = Integer.parseInt(JOptionPane.showInputDialog(null,
+                "Please enter the number of reps of your new move:",
+                null, JOptionPane.OK_CANCEL_OPTION));
         Move newMove = new Move(name, reps);
         selectedTrack.addMove(newMove);
         moves.addElement(newMove);
@@ -92,7 +98,9 @@ public class WorkoutViewer {
     public void deleteMoveFromMoveList() {
         Track selectedTrack = (Track) tracks.getElementAt(trackList.getSelectedIndex());
         Move moveToDelete = (Move) moves.getElementAt(moveList.getSelectedIndex());
-        JOptionPane.showMessageDialog(null, "Are you sure you would like to delete this move?");
+        JOptionPane.showConfirmDialog(null,
+                "Are you sure you would like to delete this move?", null,
+                JOptionPane.YES_NO_OPTION);
         selectedTrack.deleteMove(moveToDelete);
         moves.removeElement(moveToDelete);
 

@@ -32,7 +32,6 @@ public class MainWorkoutViewer extends JFrame {
     private JButton deleteMoveButton;
     private JLabel label;
     private JMenuBar menuBar;
-    private JMenu quitApplication;
     private JButton loadApplication;
     private WorkoutViewer workoutViewer;
     private JsonWriter jsonWriter;
@@ -42,7 +41,10 @@ public class MainWorkoutViewer extends JFrame {
 
     public MainWorkoutViewer(String title) {
         setTitle(title);
+        setSize(500, 400);
+
         workoutViewer = new WorkoutViewer();
+        workoutViewer.getWorkout().setWorkoutTitle(title);
         jsonWriter = new JsonWriter(JSON_FILE);
         jsonReader = new JsonReader(JSON_FILE);
         JSplitPane top = workoutViewer.getSplitPane();
@@ -63,7 +65,6 @@ public class MainWorkoutViewer extends JFrame {
         entirePane.setDividerLocation(250);
 
         getContentPane().add(entirePane);
-        setJMenuBar(createMenuBar());
         askToSave();
     }
 
@@ -119,36 +120,28 @@ public class MainWorkoutViewer extends JFrame {
 //        }
 //    }
 
-    public JMenuBar createMenuBar() {
-        menuBar = new JMenuBar();
-        loadApplication = new JButton("Load Saved Workout");
-        addLoadWorkoutFunction();
-        menuBar.add(loadApplication);
-        return menuBar;
-    }
 
-    private void addLoadWorkoutFunction() {
-        loadApplication.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Workout savedWorkout = jsonReader.read();
-                    for (Track t : savedWorkout) {
-                        workoutViewer.getTracks().addElement(t);
-                        for (Move m : t.getMoves()) {
-                            workoutViewer.getMoves().addElement(m);
-                        }
-                    }
-                    JOptionPane.showMessageDialog(null,
-                            "Loaded " + "\"" + savedWorkout.getWorkoutTitle() + "\"" + " from " + JSON_FILE);
-                } catch (IOException exception) {
-                    JOptionPane.showMessageDialog(null,
-                            "An error occurred when trying to load saved workout from " + JSON_FILE);
-                } catch (UnrealisticRepsException exception) {
-                    System.out.println("The saved workout contains a move with an invalid number of reps!");
+    public void loadSavedWorkout() {
+        try {
+            Workout savedWorkout = jsonReader.read();
+            String savedTitle = savedWorkout.getWorkoutTitle();
+            setTitle(savedTitle);
+            for (Track t : savedWorkout) {
+                workoutViewer.getTracks().addElement(t);
+                for (Move m : t.getMoves()) {
+                    workoutViewer.getMoves().addElement(m);
                 }
             }
-        });
+            JOptionPane.showMessageDialog(null,
+                    "Loaded " + "\"" + savedWorkout.getWorkoutTitle() + "\"" + " from " + JSON_FILE,
+                    null, JOptionPane.INFORMATION_MESSAGE);
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+        } catch (IOException exception) {
+            JOptionPane.showMessageDialog(null,
+                    "An error occurred when trying to load saved workout from " + JSON_FILE);
+        } catch (UnrealisticRepsException exception) {
+            System.out.println("The saved workout contains a move with an invalid number of reps!");
+        }
     }
 
 
@@ -159,6 +152,7 @@ public class MainWorkoutViewer extends JFrame {
                 int selection = JOptionPane.showConfirmDialog(null,
                         "Would you like to save your workout?",
                         null, JOptionPane.YES_NO_CANCEL_OPTION);
+                setDefaultCloseOperation(EXIT_ON_CLOSE);
                 if (selection == JOptionPane.YES_OPTION) {
                     Workout workoutToSave = workoutViewer.getWorkout();
                     try {
@@ -167,6 +161,7 @@ public class MainWorkoutViewer extends JFrame {
                         jsonWriter.close();
                         JOptionPane.showMessageDialog(null,
                                 "\"" + workoutToSave.getWorkoutTitle() + "\"" + " has been saved to " + JSON_FILE);
+
                     } catch (FileNotFoundException ex) {
                         JOptionPane.showMessageDialog(null,
                                 "Unable to save " + "\"" + workoutToSave.getWorkoutTitle() + "\"" + " to " + JSON_FILE);
