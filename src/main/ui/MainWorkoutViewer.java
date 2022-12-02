@@ -6,14 +6,8 @@ import model.Track;
 import model.Workout;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-import ui.console.WorkoutTrackerApp;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +18,20 @@ import java.io.IOException;
 
 import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
+// REFERENCES:
+
+// SplitPaneDemo2.java:
+// https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/
+// examples/components/SplitPaneDemo2Project/src/components/SplitPaneDemo2.java
+
+// How to Use Buttons, Check Boxes, and Radio Buttons:
+// https://docs.oracle.com/javase/tutorial/uiswing/components/button.html
+// ButtonDemo.java:
+// https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/
+// examples/components/ButtonDemoProject/src/components/ButtonDemo.java
+
+// Represents the entire workout viewer; a frame containing the top splitPane with the track-list and move-list,
+// and buttons on the bottom pane
 public class MainWorkoutViewer extends JFrame {
     private JSplitPane entirePane;
     private JButton addTrackButton;
@@ -31,14 +39,14 @@ public class MainWorkoutViewer extends JFrame {
     private JButton addMoveButton;
     private JButton deleteMoveButton;
     private JLabel label;
-    private JMenuBar menuBar;
-    private JButton loadApplication;
     private WorkoutViewer workoutViewer;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private static final String JSON_FILE = "./data/workout.json";
 
-
+    // MODIFIES: this
+    // EFFECTS: creates and shows the main workout viewer frame, with top pane containing the
+    // track-list and move-list split pane, and bottom pane with buttons
     public MainWorkoutViewer(String title) {
         setTitle(title);
         setSize(500, 400);
@@ -68,6 +76,8 @@ public class MainWorkoutViewer extends JFrame {
         askToSave();
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds the add/delete track functionality to the "Add new track" and "Delete track" buttons, respectively
     private void createTrackButtons() {
         addTrackButton = new JButton("Add new track");
         addTrackButton.addActionListener(new ActionListener() {
@@ -86,6 +96,8 @@ public class MainWorkoutViewer extends JFrame {
         });
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds the add/delete move functionality to the "Add new move" and "Delete move" buttons, respectively
     private void createMoveButtons() {
         addMoveButton = new JButton("Add new move");
         addMoveButton.addActionListener(new ActionListener() {
@@ -108,19 +120,9 @@ public class MainWorkoutViewer extends JFrame {
         });
     }
 
-//    @Override
-//    public void valueChanged(ListSelectionEvent e) {
-//        if (!e.getValueIsAdjusting()) {
-//            if (workoutViewer.getTracks().isEmpty() || workoutViewer.getTrackList().getSelectedIndex() == -1) {
-//                deleteTrackButton.setEnabled(false);
-//            }
-//            if (workoutViewer.getMoves().isEmpty() || workoutViewer.getTrackList().getSelectedIndex() == -1) {
-//                deleteMoveButton.setEnabled(false);
-//            }
-//        }
-//    }
-
-
+    // MODIFIES: this
+    // EFFECTS: loads from file all tracks and moves of each track in previously saved workout
+    // in main workout viewer window
     public void loadSavedWorkout() {
         try {
             Workout savedWorkout = jsonReader.read();
@@ -144,53 +146,43 @@ public class MainWorkoutViewer extends JFrame {
         }
     }
 
-
+    // EFFECTS: provides user with the option to save the workout
     private void askToSave() {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int selection = JOptionPane.showConfirmDialog(null,
+                int selection = JOptionPane.showOptionDialog(null,
                         "Would you like to save your workout?",
-                        null, JOptionPane.YES_NO_CANCEL_OPTION);
-                setDefaultCloseOperation(EXIT_ON_CLOSE);
-                if (selection == JOptionPane.YES_OPTION) {
-                    Workout workoutToSave = workoutViewer.getWorkout();
-                    try {
-                        jsonWriter.open();
-                        jsonWriter.write(workoutToSave);
-                        jsonWriter.close();
-                        JOptionPane.showMessageDialog(null,
-                                "\"" + workoutToSave.getWorkoutTitle() + "\"" + " has been saved to " + JSON_FILE);
-
-                    } catch (FileNotFoundException ex) {
-                        JOptionPane.showMessageDialog(null,
-                                "Unable to save " + "\"" + workoutToSave.getWorkoutTitle() + "\"" + " to " + JSON_FILE);
-                    }
-                }
+                        null, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, null, null);
+                processUserSelection(selection);
             }
-
-            ;
         });
+
     }
 
+    // EFFECTS: processes user selection related to the choice of saving the workout
+    private void processUserSelection(int selection) {
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        if (selection == JOptionPane.YES_OPTION) {
+            Workout workoutToSave = workoutViewer.getWorkout();
+            try {
+                jsonWriter.open();
+                jsonWriter.write(workoutToSave);
+                jsonWriter.close();
+                JOptionPane.showMessageDialog(null,
+                        "\"" + workoutToSave.getWorkoutTitle() + "\"" + " has been saved to " + JSON_FILE);
 
-    // https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html
-    // Additional code referenced from:
-    // https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
-    // EFFECTS: returns an ImageIcon from specified file, or null if the path was invalid
-    protected static ImageIcon createScaledImageIcon(String path) {
-        java.net.URL imgURL = ImagePath.class.getResource(path);
-        if (imgURL != null) {
-            ImageIcon unscaledImageIcon = new ImageIcon(imgURL);
-            Image unscaledImage = unscaledImageIcon.getImage();
-            Image scaledImage = unscaledImage.getScaledInstance(235, 143, Image.SCALE_SMOOTH);
-            ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
-            return scaledImageIcon;
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null,
+                        "Unable to save " + "\"" + workoutToSave.getWorkoutTitle() + "\"" + " to " + JSON_FILE);
+            }
+        } else if (selection == JOptionPane.CANCEL_OPTION) {
+            setVisible(true);
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         }
     }
+
 
 }
 

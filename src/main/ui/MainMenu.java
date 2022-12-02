@@ -5,11 +5,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-// References:
+// REFERENCES:
+
 // BoxLayoutDemo.java:
 // https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/
 // uiswing/examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java
+// How to Use BoxLayout:
+// https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html
+
 // https://mkyong.com/swing/java-swing-joptionpane-showinputdialog-example/
+
+// DialogDemo.java:
+// https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/
+// examples/components/DialogDemoProject/src/components/DialogDemo.java
+// How To Use Dialogs:
+// https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+
+// CustomIconDemo.java:
+// https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/
+// examples/components/CustomIconDemoProject/src/components/CustomIconDemo.java
+// How To Use Icons:
+// https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/
+
+// Main Menu of the Workout Tracker Graphical User Interface Application
 public class MainMenu extends JFrame {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 400;
@@ -65,6 +83,9 @@ public class MainMenu extends JFrame {
         add(Box.createHorizontalStrut(10));
     }
 
+    // MODIFIES: this
+    // EFFECTS: prompts user to enter workout title when the "Create New Workout" button is clicked;
+    //          creates and shows a new workout viewer when selection is confirmed
     private void addFunctionalityToFirstButton(JButton button) {
         button.addActionListener(new ActionListener() {
             @Override
@@ -72,7 +93,6 @@ public class MainMenu extends JFrame {
                 workoutTitle = JOptionPane.showInputDialog(null,
                         "Please enter the name of your new workout:",
                         null, JOptionPane.OK_CANCEL_OPTION);
-
                 setVisible(false);
                 workoutViewer = new MainWorkoutViewer(workoutTitle);
                 workoutViewer.setVisible(true);
@@ -80,6 +100,8 @@ public class MainMenu extends JFrame {
         });
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads previously saved workout from file when the "Load Saved Workout" button is clicked
     private void addFunctionalityToLoadButton(JButton button) {
         button.addActionListener(new ActionListener() {
             @Override

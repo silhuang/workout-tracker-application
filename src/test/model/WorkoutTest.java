@@ -117,6 +117,12 @@ class WorkoutTest {
         assertEquals(0, tracks.size());
     }
 
+    @Test
+    public void testSetWorkoutTitle() {
+        testWorkout.setWorkoutTitle("POP 22");
+        assertEquals("POP 22", testWorkout.getWorkoutTitle());
+    }
+
 
     @Test
     public void testIterator() {
