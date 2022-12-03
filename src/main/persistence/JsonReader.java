@@ -1,9 +1,7 @@
 package persistence;
 
 import exceptions.UnrealisticRepsException;
-import model.Move;
-import model.Track;
-import model.Workout;
+import model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,7 +40,6 @@ public class JsonReader {
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s));
         }
-
         return contentBuilder.toString();
     }
 
@@ -51,6 +48,8 @@ public class JsonReader {
         String title = jsonWorkout.getString("workout title");
         Workout workout = new Workout(title);
         addTracks(workout, jsonWorkout);
+        EventLog.getInstance().clearLog();
+        EventLog.getInstance().logEvent(new Event("Loaded previously saved workout titled from file"));
         return workout;
     }
 

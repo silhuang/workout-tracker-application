@@ -36,7 +36,6 @@ public class MainMenu extends JFrame {
     private JLabel crunchesGIF;
     private JButton createWorkoutButton;
     private JButton loadWorkoutButton;
-    private JButton quitButton;
     private MainWorkoutViewer workoutViewer;
     private String workoutTitle;
 
@@ -62,6 +61,7 @@ public class MainMenu extends JFrame {
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
         title = new JLabel("Workout Tracker App");
         title.setFont(new Font("SanSerif", Font.BOLD, 40));
+        setBackground(new Color(240, 240, 240));
 
         crunches = createScaledImageIcon("animations/crunches.gif");
         crunchesGIF = new JLabel(crunches);

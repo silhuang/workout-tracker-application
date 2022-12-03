@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +40,10 @@ public class TrackTest {
         testTrack.addMove(firstMove);
         assertEquals(1, testTrack.getMoves().size());
         assertEquals(firstMove, testTrack.getMoves().get(0));
+
+        Collection<Event> events = EventLog.getInstance().getLoggedEvents();
+        assertTrue(events.contains((new Event("A new move called " + firstMove.getName() + " with "
+                + firstMove.getReps() + " reps was added to " + testTrack.getTrackTitle()))));
     }
 
     @Test
@@ -68,6 +73,11 @@ public class TrackTest {
 
         assertTrue(testTrack.deleteMove(firstMove));
         assertEquals(0, testTrack.getMoves().size());
+
+        Collection<Event> events = EventLog.getInstance().getLoggedEvents();
+        assertTrue(events.contains(new Event(firstMove.getName() + " with "
+                + firstMove.getReps() + " was deleted from " + testTrack.getTrackTitle())));
+
     }
 
     @Test
@@ -134,6 +144,11 @@ public class TrackTest {
         JSONArray jsonMoves = testTrack.movesToJson();
         assertTrue(jsonMoves.isEmpty());
         assertEquals(0, jsonMoves.length());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("Standing Warmup", testTrack.toString());
     }
 
     @Test

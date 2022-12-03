@@ -120,4 +120,9 @@ public class MoveTest {
         assertEquals("Plank Jacks", testJsonMove.get("name"));
         assertEquals(30,testJsonMove.get("reps"));
     }
+
+    @Test
+    public void testToString() {
+        assertEquals("Name: " + testMove.getName() + "   Reps: " + testMove.getReps(), testMove.toString());
+    }
 }

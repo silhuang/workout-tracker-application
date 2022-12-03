@@ -18,6 +18,7 @@ public class Workout implements Iterable<Track>, Writable {
     public Workout(String title) {
         workoutTitle = title;
         tracks = new ArrayList<>();
+        EventLog.getInstance().logEvent(new Event("A new workout titled " + title + " was created"));
     }
 
     // MODIFIES: this
@@ -31,6 +32,8 @@ public class Workout implements Iterable<Track>, Writable {
             }
         }
         tracks.add(track);
+        EventLog.getInstance().logEvent(new Event("A new track titled "
+                + track.getTrackTitle() + " was added to " + workoutTitle));
         return true;
     }
 
@@ -40,6 +43,8 @@ public class Workout implements Iterable<Track>, Writable {
     public boolean deleteTrack(Track track) {
         if (tracks.contains(track)) {
             tracks.remove(track);
+            EventLog.getInstance().logEvent(new Event(track.getTrackTitle()
+                    + " was deleted from" + workoutTitle));
             return true;
         }
         return false;
@@ -61,6 +66,10 @@ public class Workout implements Iterable<Track>, Writable {
         return tracks;
     }
 
+    // EFFECTS: logs the event of ending the workout (i.e. closing the application)
+    public void endWorkout() {
+        EventLog.getInstance().printLoggedEvents();
+    }
 
     @Override
     // EFFECTS: returns an iterator over the collection of tracks

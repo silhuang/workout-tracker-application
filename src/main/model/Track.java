@@ -23,6 +23,8 @@ public class Track implements Iterable<Move>, Writable {
     // EFFECTS: adds the given move to the track
     public void addMove(Move move) {
         moves.add(move);
+        EventLog.getInstance().logEvent(new Event("A new move called " + move.getName() + " with "
+                + move.getReps() + " reps was added to " + trackTitle));
     }
 
     // MODIFIES: this
@@ -30,7 +32,10 @@ public class Track implements Iterable<Move>, Writable {
     public boolean deleteMove(Move move) {
         if (moves.contains(move)) {
             moves.remove(move);
+            EventLog.getInstance().logEvent(new Event(move.getName() + " with "
+                    + move.getReps() + " was deleted from " + trackTitle));
             return true;
+
         }
         return false;
     }

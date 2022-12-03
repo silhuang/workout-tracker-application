@@ -181,6 +181,7 @@ public class MainWorkoutViewer extends JFrame {
             setVisible(true);
             setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         }
+        workoutViewer.getWorkout().endWorkout();
     }
 
 

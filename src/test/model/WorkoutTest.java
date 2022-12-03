@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +26,8 @@ class WorkoutTest {
     public void testConstructor() {
         assertEquals("POP 23", testWorkout.getWorkoutTitle());
         assertTrue(testWorkout.getTracks().isEmpty());
+        Collection<Event> events = EventLog.getInstance().getLoggedEvents();
+        assertTrue(events.contains(new Event("A new workout titled POP 23 was created")));
     }
 
 
@@ -35,6 +38,9 @@ class WorkoutTest {
         assertTrue(testWorkout.addTrack(track1));
         assertEquals(1, tracks.size());
         assertEquals(track1, tracks.get(0));
+        Collection<Event> events = EventLog.getInstance().getLoggedEvents();
+        assertTrue(events.contains(new Event("A new track titled "
+                + track1.getTrackTitle() + " was added to " + testWorkout.getWorkoutTitle())));
     }
 
     @Test
@@ -49,6 +55,12 @@ class WorkoutTest {
         assertEquals(2, tracks.size());
         assertEquals(track1, tracks.get(0));
         assertEquals(track2, tracks.get(1));
+        Collection<Event> events = EventLog.getInstance().getLoggedEvents();
+        assertEquals(3, events.size());
+        assertTrue(events.contains(new Event("A new track titled "
+                + track1.getTrackTitle() + " was added to " + testWorkout.getWorkoutTitle())));
+        assertTrue(events.contains(new Event("A new track titled "
+                + track2.getTrackTitle() + " was added to " + testWorkout.getWorkoutTitle())));
     }
 
     @Test
@@ -62,6 +74,9 @@ class WorkoutTest {
 
         assertEquals(1, tracks.size());
         assertEquals(track1, tracks.get(0));
+        Collection<Event> events = EventLog.getInstance().getLoggedEvents();
+        assertTrue(events.contains(new Event("A new track titled "
+                + track1.getTrackTitle() + " was added to " + testWorkout.getWorkoutTitle())));
     }
 
     @Test
@@ -92,6 +107,9 @@ class WorkoutTest {
 
         assertTrue(deleteOnce);
         assertEquals(0, tracks.size());
+        Collection<Event> events = EventLog.getInstance().getLoggedEvents();
+        assertTrue(events.contains(new Event(track1.getTrackTitle()
+                + " was deleted from" + testWorkout.getWorkoutTitle())));
     }
 
     @Test
@@ -115,6 +133,11 @@ class WorkoutTest {
         assertTrue(deleteOnce);
         assertTrue(deleteTwice);
         assertEquals(0, tracks.size());
+        Collection<Event> events = EventLog.getInstance().getLoggedEvents();
+        assertTrue(events.contains(new Event(track1.getTrackTitle()
+                + " was deleted from" + testWorkout.getWorkoutTitle())));
+        assertTrue(events.contains(new Event(track2.getTrackTitle()
+                + " was deleted from" + testWorkout.getWorkoutTitle())));
     }
 
     @Test
