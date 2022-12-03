@@ -57,3 +57,12 @@ been saved to file. Click "Ok" to close the application.
 - **Loading:** Open the application again, and click on "Load Saved Workout". A popup window will indicate that the saved workout 
 has been loaded from file. Click "Ok", and you should now be able to see all the tracks and moves you added to your previous workout
 on the workout viewer window that has appeared on screen.
+
+## Reflection
+
+- Overall, I am quite satisfied with the structure of my program, but if I were to refactor it,
+the Workout class would have a HashMap of Tracks, where each key is a Track and the corresponding value
+is the collection of moves of that track. This would be a much more suitable data structure for
+storing data on a workout's tracks and their associated moves, rather than an ArrayList of Track. 
+This way, I can also add/remove moves to any track in addition to tracks from the Workout class directly, allowing
+for a more compact design. 
